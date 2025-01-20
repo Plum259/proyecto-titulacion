@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #00e1ff, #00e1ff);
+        }
+
+        .register-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .register-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .register-container input[type="text"],
+        .register-container input[type="email"],
+        .register-container input[type="password"], 
+        .register-container input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .register-container .admin-checkbox {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .register-container button {
+            background: #00e1ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .register-container button:hover {
+            background: #00c1e0;
+        }
+
+        .register-container .extra-links {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .register-container .extra-links a {
+            color: #00e1ff;
+            text-decoration: none;
+        }
+
+        .register-container .extra-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Crear Cuenta</h2>
+        <form id="registerForm">
+            <input type="text" id="nombre" placeholder="Nombre" required>
+            <input type="text" id="apellido" placeholder="Apellido" required>
+            <input type="email" id="correo" placeholder="Correo Electrónico" required>
+            <input type="number" id="telefono" placeholder="Teléfono" required>
+            <input type="number" id="rut" placeholder="RUT" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+        
+            <div class="admin-checkbox">
+                <label>
+                    <input type="checkbox" id="admin"> Registrar como Administrador
+                </label>
+            </div>
+        
+            <button type="submit">Registrar</button>
+        </form>
+        
+        <script>
+            document.getElementById('registerForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+        
+                const formData = {
+                    nombre: document.getElementById('nombre').value,
+                    apellido: document.getElementById('apellido').value,
+                    correo: document.getElementById('correo').value,
+                    telefono: document.getElementById('telefono').value,
+                    rut: document.getElementById('rut').value,
+                    password: document.getElementById('password').value,
+                    rol: document.getElementById('admin').checked ? 'admin' : 'user',
+                };
+        
+                fetch('http://127.0.0.1:5000/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || data.error);
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+              
+        <div class="extra-links">
+            <p>¿Ya tienes una cuenta? <a href="index.html">Inicia Sesión</a></p>
+        </div>
+    </div>
+</body>
+</html>

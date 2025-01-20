@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #00e1ff, #00e1ff);
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-container button {
+            background: #00e1ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .login-container button:hover {
+            background: #00e1ff;
+        }
+
+        .login-container .extra-links {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .login-container .extra-links a {
+            color: #00e1ff;
+            text-decoration: none;
+        }
+
+        .login-container .extra-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="login-form">
+            <input type="text" id="usuario" placeholder="Correo Electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit">Ingresar</button>
+        </form>
+        <div class="extra-links">
+            <p>¿No tienes una cuenta? <a href="registro.html">Regístrate</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el formulario de login
+        document.getElementById("login-form").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+            // Obtener los valores de los inputs
+            const usuario = document.getElementById("usuario").value;
+            const password = document.getElementById("password").value;
+
+            // Enviar los datos al servidor
+            const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ usuario, password })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Si el login es exitoso, redirigimos al chatbot
+                window.location.href = "chatbot.html";
+            } else {
+                // Si el login falla, mostramos un mensaje
+                alert(result.error || "Error en el login");
+            }
+        });
+    </script>
+</body>
+</html>
